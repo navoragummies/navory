@@ -28,15 +28,13 @@
 
 * { box-sizing: border-box; }
 
-html, body { height: 100%; }
-
 body {
   margin: 0;
   font-family: var(--font-body);
   color: var(--ink);
   background-color: var(--cream);
-  overflow: hidden;
   position: relative;
+  overflow-x: hidden;
 }
 
 h1, h2, h3 { font-family: var(--font-display); margin: 0; }
@@ -70,6 +68,7 @@ button { font-family: var(--font-body); cursor: pointer; }
   border-bottom: var(--border);
   overflow: hidden;
   white-space: nowrap;
+  touch-action: pan-y;
 }
 
 .marquee__track {
@@ -94,14 +93,17 @@ button { font-family: var(--font-body); cursor: pointer; }
 
 /* ---------- topbar / tabs ---------- */
 .topbar {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 40;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 6vw 0;
+  padding: 22px 6vw 14px;
   flex-wrap: wrap;
   gap: 14px;
+  background: var(--cream);
+  touch-action: pan-y;
 }
 
 .brand {
@@ -201,31 +203,26 @@ button { font-family: var(--font-body); cursor: pointer; }
 
 .screens {
   position: relative;
-  height: calc(100vh - var(--topbar-h));
 }
 
 .screen {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
+  display: none;
   padding: 46px 6vw 40px;
-  display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(40px) scale(0.98);
-  transition: opacity .5s ease, transform .5s ease;
+  min-height: calc(100vh - var(--topbar-h));
   background-color: var(--cream);
   background-image: radial-gradient(rgba(23,20,18,0.09) 1.4px, transparent 1.4px);
   background-size: 15px 15px;
 }
 
 .screen.is-active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0) scale(1);
-  z-index: 10;
+  display: flex;
+  animation: screen-in .45s ease both;
+}
+
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .mono-eyebrow {
@@ -695,19 +692,25 @@ button { font-family: var(--font-body); cursor: pointer; }
    REVEAL
    =========================================================== */
 
+@keyframes reveal-pop {
+  from { opacity: 0; transform: scale(0.88) rotate(-2deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes reveal-pop-rot {
+  from { opacity: 0; transform: scale(0.88) rotate(-2deg); }
+  to   { opacity: 1; transform: rotate(var(--rot, 0deg)); }
+}
+
+/* animation (no transition): un .screen pasa de display:none a flex de
+   golpe, así que una transition nunca vería el estado "de partida". */
 .reveal {
   opacity: 0;
-  transform: scale(0.88) rotate(-2deg);
-  transition: opacity .55s cubic-bezier(.2,.8,.3,1.2), transform .55s cubic-bezier(.2,.8,.3,1.2);
-  transition-delay: calc(var(--d, 0) * 70ms);
+  animation: reveal-pop .55s cubic-bezier(.2,.8,.3,1.2) both;
+  animation-delay: calc(var(--d, 0) * 70ms);
 }
 
-.screen.is-active .reveal {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-}
-
-.screen.is-active .sticker-card.reveal { transform: rotate(var(--rot, 0deg)); }
+.sticker-card.reveal { animation-name: reveal-pop-rot; }
 
 /* ===========================================================
    PAGINADOR

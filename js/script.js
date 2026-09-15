@@ -30,6 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
     tabs[current].setAttribute("aria-selected", "true");
     dots[current].classList.add("is-active");
 
+    // cada pantalla arranca arriba del todo, no donde había quedado
+    // scrolleada la anterior.
+    window.scrollTo({ top: 0, behavior: "instant" });
+
     // en Contacto ya hay un botón de WhatsApp grande: ocultamos el flotante
     // para que no se superponga con él.
     whatsappFab?.classList.toggle("is-hidden", current === 2);
