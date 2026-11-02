@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel · Návora Gummies</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ===== Cargando ===== -->
+<div class="boot" id="v-boot">
+  <span class="boot__logo"><img src="assets/logo.jpg" alt=""></span>
+  <p>Abriendo el panel…</p>
+</div>
+
+<!-- ===== Ingreso ===== -->
+<section class="login" id="v-login" hidden>
+  <div class="login__deco" aria-hidden="true">
+    <span>🍬</span><span>🍭</span><span>✨</span><span>💗</span><span>🍬</span><span>🎀</span>
+  </div>
+  <form class="login-card" id="f-login">
+    <span class="login-card__logo"><img src="assets/logo.jpg" alt="Návora Gummies"></span>
+    <p class="eyebrow">NÁVORA GUMMIES</p>
+    <h1>Panel de <mark>admin</mark></h1>
+    <label class="field">Mail
+      <input id="l-mail" type="email" autocomplete="username" required>
+    </label>
+    <label class="field">Contraseña
+      <input id="l-pass" type="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn btn--pink btn--big" type="submit">Entrar →</button>
+    <button class="link" type="button" id="b-olvide">Me olvidé la contraseña</button>
+    <p class="msg" id="l-msg" role="status"></p>
+  </form>
+
+  <form class="login-card" id="f-reset" hidden>
+    <span class="login-card__logo"><img src="assets/logo.jpg" alt=""></span>
+    <h1>Nueva <mark>contraseña</mark></h1>
+    <label class="field">Contraseña nueva (mínimo 8)
+      <input id="r-pass" type="password" autocomplete="new-password" minlength="8" required>
+    </label>
+    <button class="btn btn--pink btn--big" type="submit">Guardar contraseña</button>
+    <p class="msg" id="r-msg" role="status"></p>
+  </form>
+</section>
+
+<!-- ===== Panel ===== -->
+<div class="app" id="v-app" hidden>
+  <header class="top">
+    <a class="top__brand" href="index.html" target="_blank" rel="noopener">
+      <span class="top__logo"><img src="assets/logo.jpg" alt=""></span>
+      <span class="top__word">NAVORA<span class="top__tape">panel</span></span>
+    </a>
+    <nav class="tabs" id="tabs" aria-label="Secciones del panel">
+      <button class="tab" data-vista="pedidos" type="button"><span aria-hidden="true">🧾</span><span class="tab__l">Pedidos</span><span class="tab__badge" id="badge-nuevos" hidden>0</span></button>
+      <button class="tab" data-vista="productos" type="button"><span aria-hidden="true">🍬</span><span class="tab__l">Productos</span></button>
+      <button class="tab" data-vista="textos" type="button"><span aria-hidden="true">✏️</span><span class="tab__l">Textos</span></button>
+      <button class="tab" data-vista="contacto" type="button"><span aria-hidden="true">📱</span><span class="tab__l">Contacto</span></button>
+    </nav>
+    <div class="top__actions">
+      <a class="btn btn--sm" href="index.html" target="_blank" rel="noopener">Ver la web ↗</a>
+      <button class="btn btn--sm btn--ghost" type="button" id="b-salir">Salir</button>
+    </div>
+  </header>
+
+  <div class="layout" id="layout">
+    <main class="main" id="main" tabindex="-1"></main>
+
+    <aside class="preview" id="preview" aria-label="Vista previa">
+      <div class="preview__bar">
+        <span class="preview__live"><i></i> VISTA PREVIA</span>
+        <div class="preview__sizes" role="group" aria-label="Tamaño">
+          <button type="button" data-size="movil" class="is-on" aria-pressed="true">📱</button>
+          <button type="button" data-size="compu" aria-pressed="false">💻</button>
+        </div>
+        <button class="preview__close" type="button" id="b-prev-cerrar" aria-label="Cerrar vista previa">✕</button>
+      </div>
+      <div class="preview__stage" id="prev-stage">
+        <div class="preview__frame" id="prev-frame">
+          <iframe id="prev" title="Vista previa de la web" src="index.html?vista-previa" loading="lazy"></iframe>
+        </div>
+      </div>
+      <p class="preview__note">Así se va a ver. Nada cambia en la web hasta que guardes.</p>
+    </aside>
+  </div>
+
+  <button class="prev-fab" id="b-prev-abrir" type="button">👀 Vista previa</button>
+
+  <div class="savebar" id="savebar" hidden>
+    <span class="savebar__txt"><i aria-hidden="true">●</i> Tenés cambios sin guardar</span>
+    <div class="savebar__actions">
+      <button class="btn btn--sm btn--ghost-light" type="button" id="b-descartar">Descartar</button>
+      <button class="btn btn--mint" type="button" id="b-guardar">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Editor de producto ===== -->
+<dialog class="sheet" id="dlg-prod" aria-labelledby="dp-title">
+  <form id="f-prod" method="dialog" novalidate>
+    <header class="sheet__head">
+      <h2 id="dp-title">Nuevo producto</h2>
+      <button class="sheet__x" type="button" data-cerrar aria-label="Cerrar">✕</button>
+    </header>
+
+    <div class="sheet__body">
+      <div class="photo-drop" id="photo-drop">
+        <img id="dp-img" alt="" hidden>
+        <div class="photo-drop__empty" id="dp-empty">
+          <span aria-hidden="true">📸</span>
+          <strong>Subí una foto</strong>
+          <small>Tocá acá o arrastrala. Se achica sola.</small>
+        </div>
+        <div class="photo-drop__busy" id="dp-busy" hidden><span></span> Subiendo…</div>
+        <input type="file" id="dp-file" accept="image/*" aria-label="Elegir foto">
+      </div>
+      <div class="photo-actions">
+        <button class="link" type="button" id="dp-cambiar">Cambiar foto</button>
+        <button class="link link--danger" type="button" id="dp-quitar">Quitar foto</button>
+      </div>
+
+      <label class="field">Nombre *
+        <input name="nombre" maxlength="80" required placeholder="Ej: Vasos de gomitas">
+      </label>
+      <label class="field">Descripción
+        <textarea name="descripcion" rows="3" maxlength="400" placeholder="Qué trae, para qué es ideal…"></textarea>
+      </label>
+
+      <div class="row2">
+        <label class="field">Precio <small>(vacío = a consultar)</small>
+          <span class="money"><b>$</b><input name="precio" inputmode="decimal" placeholder="Consultar"></span>
+        </label>
+        <label class="field">Se vende por <small>(opcional)</small>
+          <input name="unidad" maxlength="30" placeholder="c/u · x 10 u. · la bandeja">
+        </label>
+      </div>
+
+      <div class="row2">
+        <label class="field">Categoría
+          <input name="categoria" maxlength="40" list="dl-cats" placeholder="Ej: Gomitas, Eventos">
+          <datalist id="dl-cats"></datalist>
+        </label>
+        <label class="field">Pedido mínimo
+          <input name="minimo" type="number" min="1" max="1000" value="1">
+        </label>
+      </div>
+
+      <label class="field">Etiqueta <small>(el cartelito amarillo, opcional)</small>
+        <input name="etiqueta" maxlength="30" placeholder="★ MÁS PEDIDO · NUEVO · PROMO">
+      </label>
+      <div class="chips-sug" id="sug-etiquetas">
+        <button type="button" data-et="★ MÁS PEDIDO">★ MÁS PEDIDO</button>
+        <button type="button" data-et="NUEVO">NUEVO</button>
+        <button type="button" data-et="PROMO">PROMO</button>
+        <button type="button" data-et="IDEAL PARA REGALAR">IDEAL PARA REGALAR</button>
+        <button type="button" data-et="">sin etiqueta</button>
+      </div>
+
+      <div class="toggles">
+        <label class="switch"><input type="checkbox" name="visible" checked><span></span> Se muestra en la web</label>
+        <label class="switch switch--warn"><input type="checkbox" name="agotado"><span></span> Sin stock</label>
+      </div>
+      <p class="msg" id="dp-msg" role="alert"></p>
+    </div>
+
+    <footer class="sheet__foot">
+      <button class="btn btn--ghost" type="button" data-cerrar>Cancelar</button>
+      <button class="btn btn--pink" type="submit" id="dp-guardar">Guardar producto</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- confirmación propia -->
+<dialog class="confirm" id="dlg-ok">
+  <p id="ok-t"></p>
+  <div class="confirm__actions">
+    <button class="btn btn--sm btn--ghost" type="button" id="ok-no">Cancelar</button>
+    <button class="btn btn--sm btn--danger" type="button" id="ok-si">Sí, borrar</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

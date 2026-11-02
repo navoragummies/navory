@@ -16,7 +16,7 @@
 
   <!-- CINTA -->
   <div class="marquee">
-    <div class="marquee__track">
+    <div class="marquee__track" id="marquee">
       <span>UN MUNDO DE DULZURA EN CADA BOCADO</span><span>★</span>
       <span>ATENCIÓN LAS 24HS</span><span>★</span>
       <span>QUILMES OESTE</span><span>★</span>
@@ -41,12 +41,17 @@
         <span class="tab__num">01</span><span class="tab__label">Inicio</span>
       </button>
       <button class="tab" data-goto="1" role="tab" aria-selected="false">
-        <span class="tab__num">02</span><span class="tab__label">Servicios</span>
+        <span class="tab__num">02</span><span class="tab__label">Productos</span>
       </button>
       <button class="tab" data-goto="2" role="tab" aria-selected="false">
         <span class="tab__num">03</span><span class="tab__label">Contacto</span>
       </button>
     </nav>
+    <button class="cart-btn" id="cartBtn" type="button" aria-label="Ver mi pedido" aria-controls="cart">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.4 11.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+      <span class="cart-btn__label">Mi pedido</span>
+      <span class="cart-btn__count" id="cartCount" hidden>0</span>
+    </button>
   </header>
 
   <main class="screens">
@@ -63,19 +68,17 @@
                onerror="this.style.display='none'; this.parentElement.classList.add('is-fallback')">
         </span>
 
-        <p class="mono-eyebrow reveal">GOLOSINAS · DETALLES QUE ENDULZAN MOMENTOS</p>
+        <p class="mono-eyebrow reveal" data-c="hero_eyebrow">GOLOSINAS · DETALLES QUE ENDULZAN MOMENTOS</p>
 
         <h1 class="cover__title">
-          <span class="reveal line line--outline">UN MUNDO DE</span>
-          <span class="reveal line line--marker">DULZURA</span>
-          <span class="reveal line line--solid">EN CADA BOCADO</span>
+          <span class="reveal line line--outline" data-c="hero_l1">UN MUNDO DE</span>
+          <span class="reveal line line--marker" data-c="hero_l2">DULZURA</span>
+          <span class="reveal line line--solid" data-c="hero_l3">EN CADA BOCADO</span>
         </h1>
 
-        <p class="cover__subtitle reveal">
-          Somos Návora Gummies, armamos gomitas que endulzan tus momentos.
-        </p>
+        <p class="cover__subtitle reveal" data-c="hero_sub">Somos Návora Gummies, armamos gomitas que endulzan tus momentos.</p>
 
-        <button class="scroll-btn reveal" data-goto="1">VER SERVICIOS →</button>
+        <button class="scroll-btn reveal" data-goto="1">VER PRODUCTOS Y PEDIR →</button>
       </div>
     </section>
 
@@ -83,11 +86,13 @@
     <section class="screen" id="panel-1" data-panel="1">
       <div class="screen-inner">
         <div class="wall__header">
-          <h2 class="wall__title reveal">NUESTROS<br>SERVICIOS</h2>
-          <p class="mono-eyebrow reveal">PARA CUMPLEAÑOS, EVENTOS O PARA AUTO REGALARTE</p>
+          <h2 class="wall__title reveal">NUESTROS<br>PRODUCTOS</h2>
+          <p class="mono-eyebrow reveal" data-c="serv_eyebrow">PARA CUMPLEAÑOS, EVENTOS O PARA AUTO REGALARTE</p>
         </div>
 
-        <div class="sticker-grid">
+        <div class="filters reveal" id="filtros" role="group" aria-label="Filtrar por categoría" hidden></div>
+
+        <div class="sticker-grid" id="catalogo">
 
           <article class="sticker-card reveal" style="--rot:-4deg">
             <span class="sticker-card__tag">★ MÁS PEDIDO</span>
@@ -127,13 +132,9 @@
 
         </div>
 
-        <div class="chip-row reveal">
-          <span class="chip">Mesas dulces</span>
-          <span class="chip">Brochetas de gomitas</span>
-          <span class="chip">Mix redondos de gomitas</span>
-        </div>
+        <p class="catalog-hint reveal">Elegí lo que quieras, armá tu pedido y lo terminamos de coordinar por WhatsApp.</p>
 
-        <button class="scroll-btn scroll-btn--ghost reveal" data-goto="2">SEGUIR →</button>
+        <button class="scroll-btn scroll-btn--ghost reveal" data-goto="2">CONTACTO →</button>
       </div>
     </section>
 
@@ -146,31 +147,29 @@
           <div class="ingredients reveal">
             <span class="ingredients__title">DÓNDE Y CUÁNDO</span>
             <ul>
-              <li><span>Zona</span><span>Quilmes Oeste</span></li>
-              <li><span>Horario</span><span>Las 24 hs</span></li>
-              <li><span>WhatsApp</span><a href="https://wa.me/5491171004613" target="_blank" rel="noopener">11 7100-4613</a></li>
-              <li><span>WhatsApp</span><a href="https://wa.me/5491126757131" target="_blank" rel="noopener">11 2675-7131</a></li>
+              <li><span>Zona</span><span data-c="zona">Quilmes Oeste</span></li>
+              <li><span>Horario</span><span data-c="horario">Las 24 hs</span></li>
+              <li><span>WhatsApp</span><a data-wa="wa1" data-wa-texto href="https://wa.me/5491171004613" target="_blank" rel="noopener">11 7100-4613</a></li>
+              <li id="li-wa2"><span>WhatsApp</span><a data-wa="wa2" data-wa-texto href="https://wa.me/5491126757131" target="_blank" rel="noopener">11 2675-7131</a></li>
             </ul>
           </div>
 
           <div class="bag__story reveal">
-            <h2>Un mundo de dulzura en cada bocado</h2>
-            <p>Somos Návora Gummies, armamos gomitas que endulzan tus momentos: mesas dulces,
-              vasos, bolsitas, brochetas, mix redondos y bandejas de gomitas — para
-              cumpleaños, eventos o para auto regalarte.</p>
+            <h2 data-c="story_titulo">Un mundo de dulzura en cada bocado</h2>
+            <p data-c="story_texto">Somos Návora Gummies, armamos gomitas que endulzan tus momentos: mesas dulces, vasos, bolsitas, brochetas, mix redondos y bandejas de gomitas — para cumpleaños, eventos o para auto regalarte.</p>
           </div>
 
         </div>
 
         <div class="receipt reveal">
           <div class="receipt__inner">
-            <p class="receipt__line">¿LISTA PARA ENDULZAR TU MOMENTO?</p>
-            <a class="stamp-btn" id="ctaBtn" href="https://wa.me/5491171004613" target="_blank" rel="noopener">
+            <p class="receipt__line" data-c="cta_linea">¿LISTA PARA ENDULZAR TU MOMENTO?</p>
+            <a class="stamp-btn" id="ctaBtn" data-wa="wa1" href="https://wa.me/5491171004613" target="_blank" rel="noopener">
               ESCRIBINOS POR WHATSAPP
             </a>
             <p class="receipt__small">o por Instagram
-              <a href="https://www.instagram.com/navora.gummies/" target="_blank" rel="noopener">@navora.gummies</a>
-              · Quilmes Oeste · Atención las 24hs</p>
+              <a data-ig href="https://www.instagram.com/navora.gummies/" target="_blank" rel="noopener">@navora.gummies</a>
+              · <span data-c="zona">Quilmes Oeste</span> · Atención <span data-c="horario">Las 24 hs</span></p>
           </div>
         </div>
 
@@ -184,11 +183,66 @@
   </main>
 
   <!-- WhatsApp flotante -->
-  <a class="whatsapp-fab" href="https://wa.me/5491171004613" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <a class="whatsapp-fab" data-wa="wa1" href="https://wa.me/5491171004613" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
     <svg viewBox="0 0 32 32" width="26" height="26" fill="currentColor" aria-hidden="true">
       <path d="M16.004 3C9.377 3 4 8.373 4 15c0 2.362.687 4.564 1.872 6.417L4 29l7.77-1.84A11.94 11.94 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3Zm0 21.75c-1.94 0-3.75-.52-5.31-1.43l-.38-.22-4.61 1.09 1.11-4.49-.25-.39A9.7 9.7 0 0 1 5.25 15c0-5.93 4.82-10.75 10.754-10.75S26.75 9.07 26.75 15 21.94 24.75 16.004 24.75Zm5.62-8.07c-.31-.15-1.82-.9-2.1-1s-.49-.15-.69.15-.79 1-.97 1.2-.36.23-.66.08a8.19 8.19 0 0 1-2.41-1.49 9.06 9.06 0 0 1-1.67-2.08c-.17-.3 0-.46.13-.6s.31-.36.46-.55a2.1 2.1 0 0 0 .31-.51.56.56 0 0 0 0-.53c-.08-.15-.69-1.67-.95-2.28s-.5-.53-.69-.54h-.59a1.14 1.14 0 0 0-.82.38 3.46 3.46 0 0 0-1.08 2.58 6 6 0 0 0 1.26 3.19 13.7 13.7 0 0 0 5.26 4.66 6 6 0 0 0 3.63 1 3.1 3.1 0 0 0 2-1.41 2.5 2.5 0 0 0 .17-1.41c-.07-.13-.26-.2-.57-.35Z"/>
     </svg>
   </a>
+
+  <!-- ============ MI PEDIDO ============ -->
+  <div class="cart-scrim" id="cartScrim" hidden></div>
+  <aside class="cart" id="cart" aria-label="Mi pedido" aria-hidden="true" inert>
+    <header class="cart__head">
+      <div>
+        <p class="mono-eyebrow">TU BOLSITA</p>
+        <h2>Mi pedido</h2>
+      </div>
+      <button class="cart__close" id="cartClose" type="button" aria-label="Cerrar">✕</button>
+    </header>
+
+    <div class="cart__body">
+      <ul class="cart__items" id="cartItems"></ul>
+
+      <div class="cart__empty" id="cartEmpty">
+        <span aria-hidden="true">🍬</span>
+        <p>Todavía no agregaste nada.</p>
+        <button class="scroll-btn" type="button" data-goto="1" data-close-cart>VER PRODUCTOS →</button>
+      </div>
+
+      <form class="cart__form" id="cartForm" novalidate hidden>
+        <div class="cart__total">
+          <span>Total estimado</span>
+          <strong id="cartTotal">$ 0</strong>
+        </div>
+        <p class="cart__note" id="cartConsultar" hidden>+ productos con precio a consultar</p>
+
+        <label class="field">Tu nombre
+          <input id="pNombre" name="nombre" autocomplete="name" maxlength="80" required>
+        </label>
+        <div class="field-row">
+          <label class="field">¿Para cuándo?
+            <input id="pFecha" name="fecha" type="date">
+          </label>
+          <label class="field">Teléfono <small>(opcional)</small>
+            <input id="pTel" name="tel" type="tel" autocomplete="tel" maxlength="40">
+          </label>
+        </div>
+        <fieldset class="seg">
+          <legend>Entrega</legend>
+          <label><input type="radio" name="entrega" value="retiro" checked><span>Retiro</span></label>
+          <label><input type="radio" name="entrega" value="envio"><span>Envío</span></label>
+        </fieldset>
+        <label class="field">Algo más <small>(colores, temática, cantidad de invitados…)</small>
+          <textarea id="pNota" name="nota" rows="3" maxlength="600"></textarea>
+        </label>
+        <p class="cart__envios" data-c="envios">Coordinamos retiro o envío por WhatsApp.</p>
+        <p class="cart__error" id="cartError" role="alert"></p>
+        <button class="stamp-btn cart__send" type="submit">ENVIAR PEDIDO POR WHATSAPP</button>
+      </form>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- indicador de pantalla + flechas -->
   <div class="paginator">
@@ -201,6 +255,7 @@
     <button class="arrow" id="nextBtn" aria-label="Siguiente">→</button>
   </div>
 
+  <script src="js/config.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
